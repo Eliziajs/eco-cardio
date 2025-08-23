@@ -1,0 +1,8 @@
+Para entrar no container do banco
+docker exec -it nome_do_container psql -U usuario_postgres -d nome_do_banco
+
+mvn clean verify sonar:sonar `
+  "-Dsonar.projectKey=eco-cardio" `
+  "-Dsonar.projectName=eco-cardio" `
+  "-Dsonar.host.url=http://localhost:9000" `
+  "-Dsonar.token=sqp_dfcd0107239db2c35b1fe8802b85c064287c95cc"
