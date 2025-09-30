@@ -1,60 +1,121 @@
-version: '3'
+version: '3.8'
 
 services:
   # PRIMEIRO SERVIÇO - PostgreSQL principal
-  postgres:
-    image: postgres:13
+  postgres-eco:
+    image: postgres:15
     container_name: dbpostgres-eco-cardio
     environment:
-      POSTGRES_USER: dbpostgres-eco-cardio
-      POSTGRES_PASSWORD: dbpostgres-eco-cardio
-      POSTGRES_DB: dbpostgres-eco-cardio
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: minha_senha_segura  # ALTERE AQUI
+      POSTGRES_DB: meu_banco
     volumes:
-      - postgres_data:/var/lib/postgresql/data
+      - postgres_eco_data:/var/lib/postgresql/data
       - ./init-scripts:/docker-entrypoint-initdb.d
     ports:
-      - "5432:5432"
+      - "5433:5432"
+    networks:
+      - monitoring
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U  dbpostgres-eco-cardio -d dbpostgres-eco-cardio"]
+      test: ["CMD-SHELL", "pg_isready -U postgres -d meu_banco"]
       interval: 5s
       timeout: 5s
       retries: 5
 
-  # SEGUNDO SERVIÇO - Banco do SonarQube (deve vir ANTES do SonarQube)
-  sonarqube:
-    image: sonarqube:community
-    container_name: sonarqube-exame-app
-    ports:
-      - "9000:9000"
-
-    environment:
-      SONAR_JDBC_URL: jdbc:postgresql://db:5432/sonar
-      SONAR_JDBC_USERNAME: sonar
-      SONAR_JDBC_PASSWORD: sonar
-      SONAR_SEARCH_JAVAOPTS: "-Xms512m -Xmx512m"
-    volumes:
-      - sonarqube_data:/opt/sonarqube/data
-      - sonarqube_extensions:/opt/sonarqube/extensions
-      - sonarqube_logs:/opt/sonarqube/logs
-
-    depends_on:
-      - db
-  db:
+  # Banco do SonarQube (deve vir ANTES do SonarQube)
+  sonardb:
     image: postgres:15
-    container_name: sonardb-exame-app
+    container_name: sonardb-eco-cardio
     environment:
       POSTGRES_USER: sonar
       POSTGRES_PASSWORD: sonar
       POSTGRES_DB: sonar
     volumes:
-      - postgresql_data:/var/lib/postgresql/data
-      - postgresql_data_conf:/etc/postgresql/postgresql.conf
+      - sonardb_data:/var/lib/postgresql/data
+      - sonardb_conf:/etc/postgresql
+    networks:
+      - monitoring
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U sonar -d sonar"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
 
-# SEÇÃO DE VOLUMES - TODOS OS VOLUMES AQUI
+  # SonarQube
+  sonarqube:
+    image: sonarqube:community
+    container_name: sonarqube-eco-cardio
+    ports:
+      - "9000:9000"
+    networks:
+      - monitoring
+    environment:
+      SONAR_JDBC_URL: jdbc:postgresql://sonardb:5432/sonar
+      SONAR_JDBC_USERNAME: sonar
+      SONAR_JDBC_PASSWORD: sonar
+      SONAR_ES_BOOTSTRAP_CHECKS_DISABLE: "true"
+      SONAR_SEARCH_JAVAOPTS: "-Xms512m -Xmx512m"
+    volumes:
+      - sonarqube_data:/opt/sonarqube/data
+      - sonarqube_extensions:/opt/sonarqube/extensions
+      - sonarqube_logs:/opt/sonarqube/logs
+    depends_on:
+      sonardb:
+        condition: service_healthy
+
+  # Prometheus
+  prometheus:
+    image: prom/prometheus:v3.5.0
+    container_name: prometheus
+    restart: unless-stopped
+    volumes:
+      - ./prometheus:/etc/prometheus
+      - prometheus_data:/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yaml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.console.libraries=/etc/prometheus/console_libraries'
+      - '--web.console.templates=/etc/prometheus/consoles'
+      - '--web.enable-lifecycle'
+    ports:
+      - "9090:9090"
+    networks:
+      - monitoring
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+  # Grafana
+  grafana:
+    image: grafana/grafana:latest
+    container_name: grafana
+    restart: unless-stopped
+    volumes:
+      - ./grafana/provisioning:/etc/grafana/provisioning
+      - ./grafana/dashboards:/var/lib/grafana/dashboards
+      - grafana_data:/var/lib/grafana
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+      - GF_USERS_ALLOW_SIGN_UP=false
+    ports:
+      - "3001:3000"
+    networks:
+      - monitoring
+    depends_on:
+      - prometheus
+
+# Volumes
 volumes:
-  postgres_data:
+  postgres_eco_data:
+  sonardb_data:
+  sonardb_conf:
   sonarqube_data:
   sonarqube_extensions:
   sonarqube_logs:
-  postgresql_data:
-  postgresql_data_conf:
+  prometheus_data:
+  grafana_data:
+
+# Networks
+networks:
+  monitoring:
+    driver: bridge

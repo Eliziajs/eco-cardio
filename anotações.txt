@@ -1,0 +1,25 @@
+Para entrar no container do banco
+docker exec -it nome_do_container psql -U usuario_postgres -d nome_do_banco
+
+mvn clean verify sonar:sonar `
+  "-Dsonar.projectKey=eco-cardio" `
+  "-Dsonar.projectName=eco-cardio" `
+  "-Dsonar.host.url=http://localhost:9000" `
+  "-Dsonar.token=sqp_dfcd0107239db2c35b1fe8802b85c064287c95cc"
+
+
+  docker exec -it seu_container psql -U seu_usuario -d seu_banco_de_dados -c "INSERT INTO users (name, lastname, genero, telefone, email, password, crm, cpf, data) VALUES ('João', 'Silva', 'MASCULINO', '(11) 99999-1111', 'joao.silva@email.com', '\$2a\$10\$XPLOR8hIn6A5qB7zQKTw.e5v6JkMq1YdN7G2HpL9mR3sVtUwW1xYz', '123456', '123.456.789-00', CURRENT_TIMESTAMP), ('Maria', 'Santos', 'FEMININO', '(21) 98888-2222', 'maria.santos@email.com', '\$2a\$10\$AbCdEfGhIjKlMnOpQrStUvWxYzAbCdEfGhIjKlMnOpQrStUvWx', '654321', '987.654.321-00', CURRENT_TIMESTAMP);"
+
+
+
+  INSERT INTO users (name, lastname, genero, telefone, email, password, crm, cpf, data) VALUES
+  ('Carlos', 'Oliveira', 'MASCULINO', '(11) 97777-3333', 'carlos.oliveira@email.com', '$2a$10$ZYXwVUtSrQpOnNmOqRsTuOePqA1B2C3D4E5F6G7H8I9J0K1L2M3N', 'CRM/SP 789012', '111.222.333-44', CURRENT_TIMESTAMP),
+  ('Ana', 'Costa', 'FEMININO', '(21) 96666-4444', 'ana.costa@email.com', '$2a$10$AbCdEfGhIjKlMnOpQrStUvWxYzAbCdEfGhIjKlMnOpQrStUvWxYz', 'CRM/RJ 345678', '222.333.444-55', CURRENT_TIMESTAMP),
+  ('Pedro', 'Almeida', 'MASCULINO', '(31) 95555-5555', 'pedro.almeida@email.com', '$2a$10$XpLoR8hIn6A5qB7zQkTwEe5v6JkMq1YdN7G2HpL9mR3sVtUwW1xYz', 'CRM/MG 901234', '333.444.555-66', CURRENT_TIMESTAMP),
+  ('Juliana', 'Lima', 'FEMININO', '(41) 94444-6666', 'juliana.lima@email.com', '$2a$10$AbCdEfGhIjKlMnOpQrStUvWxYzAbCdEfGhIjKlMnOpQrStUvWxYz', 'CRM/PR 567890', '444.555.666-77', CURRENT_TIMESTAMP),
+  ('Ricardo', 'Souza', 'MASCULINO', '(51) 93333-7777', 'ricardo.souza@email.com', '$2a$10$ZYXwVUtSrQpOnNmOqRsTuOePqA1B2C3D4E5F6G7H8I9J0K1L2M3N', 'CRM/RS 123890', '555.666.777-88', CURRENT_TIMESTAMP),
+  ('Fernanda', 'Martins', 'FEMININO', '(61) 92222-8888', 'fernanda.martins@email.com', '$2a$10$AbCdEfGhIjKlMnOpQrStUvWxYzAbCdEfGhIjKlMnOpQrStUvWxYz', 'CRM/DF 678901', '666.777.888-99', CURRENT_TIMESTAMP),
+  ('Lucas', 'Ribeiro', 'MASCULINO', '(71) 91111-9999', 'lucas.ribeiro@email.com', '$2a$10$XpLoR8hIn6A5qB7zQkTwEe5v6JkMq1YdN7G2HpL9mR3sVtUwW1xYz', 'CRM/BA 234567', '777.888.999-00', CURRENT_TIMESTAMP),
+  ('Patrícia', 'Carvalho', 'FEMININO', '(81) 90000-0000', 'patricia.carvalho@email.com', '$2a$10$AbCdEfGhIjKlMnOpQrStUvWxYzAbCdEfGhIjKlMnOpQrStUvWxYz', 'CRM/PE 890123', '888.999.000-11', CURRENT_TIMESTAMP),
+  ('Marcos', 'Ferreira', 'MASCULINO', '(48) 98888-1111', 'marcos.ferreira@email.com', '$2a$10$ZYXwVUtSrQpOnNmOqRsTuOePqA1B2C3D4E5F6G7H8I9J0K1L2M3N', 'CRM/SC 456789', '999.000.111-22', CURRENT_TIMESTAMP),
+  ('Amanda', 'Rodrigues', 'FEMININO', '(27) 97777-2222', 'amanda.rodrigues@email.com', '$2a$10$AbCdEfGhIjKlMnOpQrStUvWxYzAbCdEfGhIjKlMnOpQrStUvWxYz', 'CRM/ES 012345', '000.111.222-33', CURRENT_TIMESTAMP);
