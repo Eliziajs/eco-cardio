@@ -2,11 +2,12 @@ package domain.service;
 
 import domain.model.Exame;
 import domain.repository.ExameRepository;
+import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 
 import java.util.Optional;
-
+@ApplicationScoped
 public class ExameService {
 
     @Inject
