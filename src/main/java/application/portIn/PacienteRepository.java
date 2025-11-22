@@ -1,4 +1,4 @@
-package domain.repository;
+package application.portIn;
 
 import domain.model.Paciente;
 

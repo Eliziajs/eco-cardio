@@ -1,7 +1,7 @@
 package infrastructure.output.persistence;
 
 import domain.model.User;
-import domain.repository.UserRepository;
+import application.portIn.UserRepository;
 import io.quarkus.hibernate.orm.panache.PanacheRepository;
 import io.quarkus.panache.common.Sort;
 import jakarta.enterprise.context.ApplicationScoped;

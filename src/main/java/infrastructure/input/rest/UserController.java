@@ -2,7 +2,7 @@ package infrastructure.input.rest;
 
 
 import domain.model.User;
-import domain.repository.UserRepository;
+import application.portIn.UserRepository;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;

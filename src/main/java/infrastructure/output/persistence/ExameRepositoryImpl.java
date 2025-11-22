@@ -1,14 +1,16 @@
 package infrastructure.output.persistence;
 
+import application.portIn.ExameRepository;
 import domain.model.Exame;
-import domain.model.User;
-import domain.repository.ExameRepository;
+
 import io.quarkus.hibernate.orm.panache.PanacheRepository;
 import io.quarkus.panache.common.Sort;
+import jakarta.enterprise.context.ApplicationScoped;
 
 import java.util.List;
 import java.util.Optional;
 
+@ApplicationScoped
 public class ExameRepositoryImpl implements ExameRepository, PanacheRepository {
     @Override
     public List<Optional<Exame>> findAll1() {

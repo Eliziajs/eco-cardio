@@ -1,7 +1,7 @@
 package domain.service;
 
+import application.portIn.PacienteRepository;
 import domain.model.Paciente;
-import domain.repository.PacienteRepository;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 

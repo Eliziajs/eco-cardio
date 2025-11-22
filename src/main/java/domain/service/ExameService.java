@@ -1,7 +1,8 @@
 package domain.service;
 
+import application.portIn.ExameRepository;
 import domain.model.Exame;
-import domain.repository.ExameRepository;
+
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
