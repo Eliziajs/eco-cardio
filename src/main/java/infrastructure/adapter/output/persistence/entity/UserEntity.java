@@ -1,40 +1,59 @@
-package domain.model;
+package infrastructure.adapter.output.persistence.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
+import jakarta.persistence.*;
+
+import java.io.Serial;
 import java.time.LocalDateTime;
-import java.util.Date;
-import java.util.Objects;
-/* O Domain é o core Bussines, então há validações de dados, regras de negócio, etc.
-Ex: validar nome , email, datas , criando funções que auxiliam os contrutores*/
+import java.util.List;
 
-public class User {
 
+@Entity
+@Table(name = "users")
+public class UserEntity extends PanacheEntityBase {
+
+    @Serial
+    private static final long serialVersionUID = 1L;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
+    @Column(nullable = true)
     private String name;
+    @Column(nullable = true)
     private String lastName;
     private String genero;
     private String telefone;
+    @Column(nullable = true, unique = true)
     private String email;
     private String password;
+    @Column(nullable = true, unique = true)
     private String crm;
+    @Column(nullable = true, unique = true)
     private String cpf;
-    private LocalDateTime data;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy HH:mm")
+    private LocalDateTime data = LocalDateTime.now();
 
-    public User(){}
-    public User(String name, String lastName, String genero, String telefone, String email, String password, String crm, String cpf, LocalDateTime data) {
-        this.name = Objects.requireNonNull(name, "O nome é obrigatório");
-        if (this.name.trim().length() < 2) throw new IllegalArgumentException();
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @OneToMany(mappedBy = "medico", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<PacienteEntity> pacientes;
 
-        this.lastName = Objects.requireNonNull(lastName, "O sobrenome é obrigatório");
-        if (this.lastName.trim().length() < 2) throw new IllegalArgumentException();
 
+    public UserEntity(){}
+    public UserEntity(Long id, String name, String lastName, String genero, String telefone, String email, String password, String crm, String cpf, LocalDateTime data, List<PacienteEntity> pacientes) {
+        this.id = id;
+        this.name = name;
+        this.lastName = lastName;
         this.genero = genero;
         this.telefone = telefone;
         this.email = email;
         this.password = password;
-        this.crm = Objects.requireNonNull(crm, "O CRM é obrigatório");
-        this.cpf = Objects.requireNonNull(cpf, "O CPF é obrigatório");
-        this.data = LocalDateTime.now();
+        this.crm = crm;
+        this.cpf = cpf;
+        this.data = data;
+        this.pacientes = pacientes;
     }
 
     public Long getId() {
@@ -115,6 +134,14 @@ public class User {
 
     public void setData(LocalDateTime data) {
         this.data = data;
+    }
+
+    public List<PacienteEntity> getPacientes() {
+        return pacientes;
+    }
+
+    public void setPacientes(List<PacienteEntity> pacientes) {
+        this.pacientes = pacientes;
     }
 }
 

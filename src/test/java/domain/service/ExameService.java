@@ -1,6 +1,6 @@
 package domain.service;
 
-import application.portIn.ExameRepository;
+import domain.ports.portOut.repository.ExameRepository;
 import domain.model.Exame;
 import io.quarkus.test.InjectMock;
 import io.quarkus.test.junit.QuarkusTest;
@@ -10,7 +10,7 @@ import jakarta.inject.Inject;
 public class ExameService {
 
     @Inject
-    ExameService exameService;
+    domain.ports.portIn.service.ExameService exameService;
 
     @InjectMock
     ExameRepository repositoryMock;

@@ -1,0 +1,35 @@
+package domain.ports.portIn.service;
+
+import domain.ports.portOut.repository.ExameRepository;
+import domain.model.Exame;
+
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
+import jakarta.transaction.Transactional;
+
+import java.util.Optional;
+@ApplicationScoped
+public class ExameService {
+
+    @Inject
+    ExameRepository exameRepositoy;
+
+    @Transactional
+    Exame create(Exame exame) {
+        return exameRepositoy.save(exame);
+    }
+
+    Optional<Exame> getFindById(Long id) {
+        return exameRepositoy.findById(id);
+    }
+
+    @Transactional
+    Exame updateExame(Exame exame) {
+        return exameRepositoy.update(exame);
+    }
+
+    @Transactional
+    void deleteExame(Long id) {
+        exameRepositoy.findById(id).ifPresent(exame -> exameRepositoy.delete(exame));
+    }
+}
