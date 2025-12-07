@@ -334,7 +334,7 @@ else
         echo_color "Instale o Quarkus CLI manualmente:" "$BLUE"
         echo "   1. Feche todos os terminais"
         echo "   2. Abra um NOVO terminal como Administrador"
-        echo "   3. Execute:"
+        echo "   3. Execute: "
         echo "      curl -Ls https://sh.jbang.dev | bash -s - app install quarkus@quarkusio"
         echo "   4. Feche e abra o terminal novamente"
     fi
